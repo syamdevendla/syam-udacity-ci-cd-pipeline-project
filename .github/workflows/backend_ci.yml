@@ -1,5 +1,5 @@
 # Workflow name
-name: Frontend Continuous Integration
+name: Backend Continuous Integration
 
 # Triggers for the workflow
 on:
@@ -30,12 +30,12 @@ jobs:
           cache: 'npm'
 
       # Install the dependencies.
-      - run: cd starter/frontend && npm ci
+      - run: cd starter/backend && npm ci
     
       - name: Run test only for main branch
         if: github.ref == 'refs/heads/master'
         # Run the test.
-        run: cd starter/frontend && npm test
+        run: cd starter/backend && npm test
 
   lint_job:
     runs-on: ubuntu-latest
@@ -49,14 +49,14 @@ jobs:
           cache: 'npm'
 
       # Install the dependencies.
-      - run: cd starter/frontend && npm ci
+      - run: cd starter/backend && npm ci
     
       - name: Run lint only for main branch
         if: github.ref == 'refs/heads/master'
         # Run the linter.
-        run: cd starter/frontend && npm run lint
+        run: cd starter/backend && npm run lint
       
-  build-actions:
+  build_job:
     needs: [test_job, lint_job]
     runs-on: ubuntu-latest
     steps:
@@ -69,9 +69,9 @@ jobs:
           cache: 'npm'
 
       # Install the dependencies.
-      - run: cd starter/frontend && npm ci
+      - run: cd starter/lint_job && npm ci
     
       - name: Run lint only for main branch
         if: github.ref == 'refs/heads/master'
         # Run the test.
-        run: cd starter/frontend && npm test
+        run: cd starter/lint_job && npm test
