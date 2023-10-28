@@ -1,0 +1,58 @@
+# Workflow name
+name: frontend_continous_integration_workflow
+
+# Triggers for the workflow
+on:
+  # Manual trigger using the workflow_dispatch event
+  workflow_dispatch:
+  
+  # Automatic trigger on push events to the main branch
+  # push:
+    # branches:
+      # - master
+      
+  # Automatic trigger on pull request events targeting the main branch
+  pull_request:
+    branches:
+      - master
+
+# Jobs defined in the workflow
+jobs:
+  frontend_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - run: cd starter/frontend && nvm use
+
+      # Install the dependencies.
+      - run: cd starter/frontend && npm ci
+  
+      - name: Run tests only for main branch
+        if: github.ref == 'refs/heads/master/starter/frontend'
+        # Run the tests.
+        run: cd starter/frontend && npm test
+
+  frontend_lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - run: cd starter/frontend && nvm use
+
+      # Install the dependencies.
+      - run: cd starter/frontend && npm ci
+    
+      - name: Run lint only for main branch
+        if: github.ref == 'refs/heads/master/starter/frontend'
+        # Run the linter.
+        run: cd starter/frontend && npm run lint
+      
+  post-build-actions:
+    needs: [frontend_test, frontend_lint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: build frontend
+      - run: npm run build --if-present
