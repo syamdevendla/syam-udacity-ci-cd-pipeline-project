@@ -24,8 +24,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - run: cd starter/frontend && nvm use
-
       # Install the dependencies.
       - run: cd starter/frontend && npm ci
   
@@ -39,8 +37,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - run: cd starter/frontend && nvm use
 
       # Install the dependencies.
       - run: cd starter/frontend && npm ci
