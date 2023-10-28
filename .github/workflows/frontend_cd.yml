@@ -10,3 +10,64 @@ on:
   push:
     branches:
       - master
+
+
+# Jobs defined in the workflow
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+          cache: 'npm'
+
+      # Install the dependencies.
+      - run: cd starter/frontend && npm ci
+    
+      - name: Run test only for main branch
+        if: github.ref == 'refs/heads/master'
+        # Run the test.
+        run: cd starter/frontend && npm test
+
+  lint_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+          cache: 'npm'
+
+      # Install the dependencies.
+      - run: cd starter/frontend && npm ci
+    
+      - name: Run lint only for main branch
+        if: github.ref == 'refs/heads/master'
+        # Run the linter.
+        run: cd starter/frontend && npm run lint
+      
+  build-actions:
+    needs: [test_job, lint_job]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+          cache: 'npm'
+
+      # Install the dependencies.
+      - run: cd starter/frontend && npm ci
+    
+      - name: Run lint only for main branch
+        if: github.ref == 'refs/heads/master'
+        # Run the test.
+        run: cd starter/frontend && npm test
