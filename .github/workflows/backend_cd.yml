@@ -23,6 +23,7 @@ jobs:
       # Install the dependencies.
       - run: cd starter/backend && pip install pipenv
       - run: cd starter/backend && pip install pytest
+      - run: cd starter/backend && pipenv install 
     
       - name: Run test only for main branch
         if: github.ref == 'refs/heads/master'
@@ -38,6 +39,7 @@ jobs:
       # Install the dependencies.
       - run: cd starter/backend && pip install pipenv
       - run: cd starter/backend && pip install pytest
+      - run: cd starter/backend && pipenv install 
       
     
       - name: Run lint only for main branch
@@ -55,6 +57,7 @@ jobs:
       # Install the dependencies.
       - run: cd starter/backend && pip install pipenv
       - run: cd starter/backend && pip install pytest
+      - run: cd starter/backend && pipenv install 
     
       - name: Run lint only for main branch
         if: github.ref == 'refs/heads/master'
