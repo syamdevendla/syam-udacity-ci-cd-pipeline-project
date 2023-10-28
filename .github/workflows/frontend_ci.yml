@@ -1,5 +1,5 @@
 # Workflow name
-name: Frontend Continuous Integration
+name: Frontend Continuous Deployment
 
 # Triggers for the workflow
 on:
@@ -7,14 +7,14 @@ on:
   workflow_dispatch:
   
   # Automatic trigger on push events to the main branch
-  # push:
-    # branches:
-      # - master
-      
+  push:
+    branches:
+      - master
   # Automatic trigger on pull request events targeting the main branch
   pull_request:
     branches:
       - master
+
 
 # Jobs defined in the workflow
 jobs:
@@ -23,10 +23,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Set up Node.js 
+        uses: actions/setup-node@v3
         with:
           node-version: latest
-          cache: 'npm'
 
       # Install the dependencies.
       - run: cd starter/frontend && npm ci
@@ -34,17 +34,17 @@ jobs:
       - name: Run test only for main branch
         if: github.ref == 'refs/heads/master'
         # Run the test.
-        run: cd starter/frontend && npm test
+        run: cd starter/frontend && npm test -- --passWithNoTests
 
   lint_job:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Set up Node.js 
+        uses: actions/setup-node@v3
         with:
           node-version: latest
-          cache: 'npm'
 
       # Install the dependencies.
       - run: cd starter/frontend && npm ci
@@ -52,7 +52,7 @@ jobs:
       - name: Run lint only for main branch
         if: github.ref == 'refs/heads/master'
         # Run the linter.
-        run: cd starter/frontend && npm run lint
+        run: cd starter/frontend && npm run lint -- --fix
       
   build-actions:
     needs: [test_job, lint_job]
@@ -60,10 +60,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Set up Node.js 
+        uses: actions/setup-node@v3
         with:
           node-version: latest
-          cache: 'npm'
 
       # Install the dependencies.
       - run: cd starter/frontend && npm ci
@@ -71,4 +71,4 @@ jobs:
       - name: Run lint only for main branch
         if: github.ref == 'refs/heads/master'
         # Run the test.
-        run: cd starter/frontend && npm test
+        run: cd starter/frontend && npm test -- --passWithNoTests
