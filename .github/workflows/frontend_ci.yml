@@ -30,7 +30,7 @@ jobs:
       # - name: Run tests only for main branch
        #  if: github.ref == 'refs/heads/master/starter/frontend'
         # Run the tests.
-        run: cd starter/frontend && npm test
+      - run: cd starter/frontend && npm test
 
   frontend_lint:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
       # - name: Run lint only for main branch
        #  if: github.ref == 'refs/heads/master/starter/frontend'
         # Run the linter.
-        run: cd starter/frontend && npm run lint
+      - run: cd starter/frontend && npm run lint
       
   post-build-actions:
     needs: [frontend_test, frontend_lint]
