@@ -19,10 +19,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: latest
-          cache: 'npm'
 
       # Install the dependencies.
       - run: cd starter/frontend && npm ci
@@ -52,10 +48,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: latest
-          cache: 'npm'
 
       # Install the dependencies.
       - run: cd starter/frontend && npm ci

@@ -21,22 +21,18 @@ jobs:
         uses: actions/checkout@v3
 
       # Install the dependencies.
-      - run: cd starter/backend && npm ci
+      - run: cd starter/backend && pipenv install
     
       - name: Run test only for main branch
         if: github.ref == 'refs/heads/master'
         # Run the test.
-        run: cd starter/backend && npm test
+        run: cd starter/backend && pipenv run test
 
   lint_job:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: latest
-          cache: 'npm'
 
       # Install the dependencies.
       - run: cd starter/backend && npm ci
@@ -44,7 +40,7 @@ jobs:
       - name: Run lint only for main branch
         if: github.ref == 'refs/heads/master'
         # Run the linter.
-        run: cd starter/backend && npm run lint
+        run: cd starter/backend && pipenv run lint
       
   build_job:
     needs: [test_job, lint_job]
@@ -52,15 +48,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: latest
-          cache: 'npm'
 
       # Install the dependencies.
-      - run: cd starter/backend && npm ci
+      - run: cd starter/backend && pipenv install
     
       - name: Run lint only for main branch
         if: github.ref == 'refs/heads/master'
         # Run the test.
-        run: cd starter/backend && npm test
+        run: cd starter/backend && pipenv run test
