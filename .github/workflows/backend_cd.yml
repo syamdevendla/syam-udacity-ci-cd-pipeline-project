@@ -19,10 +19,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: latest
-          
 
       # Install the dependencies.
       - run: cd starter/backend && npm ci
