@@ -39,6 +39,7 @@ jobs:
       # Install the dependencies.
       - run: cd starter/backend && pip install pipenv
       - run: cd starter/backend && pip install pytest
+      - run: cd starter/backend && pip install flake8
       - run: cd starter/backend && pipenv install 
       
     
