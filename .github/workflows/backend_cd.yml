@@ -95,5 +95,5 @@ jobs:
         run: |
           cd starter/backend && docker build  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           cd starter/backend && docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          cd starter/backend/k8s && kustomize edit set image backend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          cd k8s && kustomize edit set image backend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -
