@@ -5,11 +5,7 @@ name: Frontend Continuous Integration
 on:
   # Manual trigger using the workflow_dispatch event
   workflow_dispatch:
-  
-  # Automatic trigger on push events to the main branch
-  push:
-    branches:
-      - master
+
   # Automatic trigger on pull request events targeting the main branch
   pull_request:
     branches:
@@ -27,6 +23,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: latest
+          npm: cache
 
       # Install the dependencies.
       - run: cd starter/frontend && npm ci
@@ -45,6 +42,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: latest
+          npm: cache
 
       # Install the dependencies.
       - run: cd starter/frontend && npm ci
@@ -102,4 +100,5 @@ jobs:
           IMAGE_TAG: ${{ env.COMMIT_SHORT_SHA }}
         run: |
           cd starter/frontend && docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          
           
