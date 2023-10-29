@@ -64,6 +64,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: latest
+          npm: cache
 
       # Install the dependencies.
       - run: cd starter/frontend && npm ci
@@ -72,7 +73,6 @@ jobs:
         if: github.ref == 'refs/heads/master'
         # Run the test.
         run: cd starter/frontend && npm test -- --passWithNoTests
-
       # Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -82,6 +82,15 @@ jobs:
           aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
           aws-region: ${{ secrets.AWS_REGION }} # Use the region from your environment variables
 
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+
+      - name: Confirm git commit SHA output
+        run: echo ${{ env.COMMIT_SHORT_SHA }}
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -90,7 +99,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: frontend_ci
-          IMAGE_TAG: frontend_ci_image
+          IMAGE_TAG: ${{ env.COMMIT_SHORT_SHA }}
         run: |
           cd starter/frontend && docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           
