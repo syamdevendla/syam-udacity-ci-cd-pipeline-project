@@ -94,6 +94,6 @@ jobs:
           IMAGE_TAG: ${{ env.COMMIT_SHORT_SHA }}
         run: |
           cd starter/backend && docker build  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          cd starter/backend && docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           cd k8s && kustomize edit set image backend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -
